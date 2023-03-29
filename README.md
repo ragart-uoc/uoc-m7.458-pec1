@@ -1,4 +1,4 @@
-# UOC - SUBJECT SHORTNAME - ACTIVITY (M1, PEC1, ETC.)
+# UOC - M7.458 - M1 - Old assets
 
-A simple Unity project created to test the contents in XXX | The Unity project for the XXX activity
+A simple Unity project created to test the contents in M1 using the old Standard Assets
 
