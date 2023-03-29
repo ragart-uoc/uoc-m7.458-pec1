@@ -1,4 +1,4 @@
-# UOC - M7.458 - M1 - Old assets
+# UOC - M7.458 - M1
 
-A simple Unity project created to test the contents in M1 using the old Standard Assets
+A simple Unity project created to test the contents in M1
 
