@@ -1,4 +1,4 @@
-# UOC - M7.458 - M1
+# UOC - M7.458 - PEC1
 
-A simple Unity project created to test the contents in M1
+The Unity project for the PEC1 activity
 
