@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fire
   - GoalLine
+  - Road
   layers:
   - Default
   - TransparentFX
