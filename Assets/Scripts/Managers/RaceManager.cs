@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using PEC1.Entities;
 
 namespace PEC1.Managers
@@ -16,6 +17,9 @@ namespace PEC1.Managers
         /// <value>Property <c>player</c> represents the player GameObject.</value>
         public GameObject player;
         
+        /// <value>Property <c>m_PlayerRigidbody</c> represents the player Rigidbody.</value>
+        private Rigidbody m_PlayerRigidbody;
+        
         /// <value>Property <c>checkpointContainer</c> represents the object containing the track checkpoints.</value>
         public Transform checkpointContainer;
         
@@ -25,7 +29,7 @@ namespace PEC1.Managers
         /// <value>Property <c>uiManager</c> represents the UIManager instance.</value>
         public UIManager uiManager;
 
-        /// <value>Property <c>player</c> represents the player GameObject.</value>
+        /// <value>Property <c>m_TotalTime</c> represents the total time ellapsed from the race start.</value>
         private float m_TotalTime;
         
         /// <value>Property <c>m_Laps</c> represents the list of laps.</value>
@@ -42,6 +46,12 @@ namespace PEC1.Managers
         
         /// <value>Property <c>m_NextCheckpointIndex</c> represents the index of the next checkpoint.</value>
         private int m_NextCheckpointIndex;
+        
+        /// <value>Property <c>m_LastCheckpointPosition</c> represents the position of the last checkpoint.</value>
+        private Vector3 m_LastCheckpointPosition;
+        
+        /// <value>Property <c>m_LastCheckpointRotation</c> represents the rotation of the last checkpoint.</value>
+        private Quaternion m_LastCheckpointRotation;
 
         /// <value>Property <c>m_RaceActive</c> shows if the race is active.</value>
         private bool m_RaceActive;
@@ -52,6 +62,9 @@ namespace PEC1.Managers
         /// <value>Property <c>m_IsRecording</c> shows if the lap is being recorded.</value>
         [SerializeField]
         private float sampleTime = 0.25f;
+        
+        /// <value>Property <c>m_PlayerInactivityTime</c> represents the time ellapsed since the player has been inactive.</value>
+        private float m_PlayerInactivityTime;
 
         /// <summary>
         /// Method <c>Awake</c> is called when the script instance is being loaded.
@@ -68,15 +81,44 @@ namespace PEC1.Managers
             
             // Get the GameManager instance
             m_GameManager = FindObjectOfType<GameManager>();
-
+        }
+        
+        /// <summary>
+        /// Method <c>OnEnable</c> is called when the object becomes enabled and active.
+        /// </summary>
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+        
+        /// <summary>
+        /// Method <c>OnSceneLoaded</c> is called when a scene is loaded.
+        /// </summary>
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
             // Get the checkpoints
             m_Checkpoints = new List<Checkpoint>();
             foreach (Transform checkpointTransform in checkpointContainer)
             {
                 var checkpoint = checkpointTransform.GetComponent<Checkpoint>();
-                    checkpoint.SetRaceManager(this);
+                checkpoint.SetRaceManager(this);
                 m_Checkpoints.Add(checkpoint);
             }
+            
+            // Get the player rigidbody
+            m_PlayerRigidbody = player.GetComponent<Rigidbody>();
+            
+            // Set the initial position
+            m_LastCheckpointPosition = player.transform.position;
+            m_LastCheckpointRotation = player.transform.rotation;
+        }
+
+        /// <summary>
+        /// Method <c>OnDisable</c> is called when the behaviour becomes disabled.
+        /// </summary>
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         /// <summary>
@@ -88,6 +130,7 @@ namespace PEC1.Managers
             if (m_RaceActive)
             {
                 m_TotalTime += Time.deltaTime;
+                uiManager.UpdateTotalTime(m_TotalTime);
             }
             
             // Record the lap
@@ -95,6 +138,7 @@ namespace PEC1.Managers
             {
                 // Increase the time
                 m_CurrentLap.LapTime += Time.deltaTime;
+                uiManager.UpdateCurrentLapTime(m_CurrentLap.LapTime);
                 m_CurrentLap.CurrentTimeBetweenSamples += Time.deltaTime;
                 
                 // Check if the time between samples is greater than the sample time
@@ -104,6 +148,33 @@ namespace PEC1.Managers
                 m_CurrentLap.AddNewData(player.transform);
                 // Keep the extra time between samples
                 m_CurrentLap.CurrentTimeBetweenSamples -= sampleTime;
+            }
+            
+            // Print a message if the player is inactive
+            if (m_PlayerRigidbody.velocity.magnitude < 0.1f)
+            {
+                m_PlayerInactivityTime += Time.deltaTime;
+                if (m_PlayerInactivityTime > 5)
+                {
+                    uiManager.ShowSubmessage("Press Fire1 to return to the last checkpoint", 2f);
+                    m_PlayerInactivityTime = 0;
+                }
+            }
+            else
+            {
+                m_PlayerInactivityTime = 0;
+            }
+        }
+
+        /// <summary>
+        /// Method <c>FixedUpdate</c> is called every fixed frame-rate frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        private void FixedUpdate()
+        {
+            // If user presses Fire1 key, return to last checkpoint
+            if (Input.GetButtonDown("Fire1"))
+            {
+                ReturnToLastCheckpoint();
             }
         }
 
@@ -126,7 +197,12 @@ namespace PEC1.Managers
                 {
                     bestLap = lap;
                 }
-                // TODO: Print the new record message
+                
+                // If the current lap is the best lap, show a message
+                if (m_CurrentLap == bestLap)
+                {
+                    uiManager.ShowSubmessage("New record!", 2f);
+                }
                 
                 // Instantiate the new lap
                 var lapNumber = m_CurrentLap.LapNumber + 1;
@@ -165,6 +241,9 @@ namespace PEC1.Managers
             }
             // Disable the current checkpoint
             checkpoint.gameObject.SetActive(false);
+            // Save the position of the last checkpoint
+            m_LastCheckpointPosition = player.transform.position;
+            m_LastCheckpointRotation = player.transform.rotation;
             // Check if the player has passed through the goal line
             if (checkpoint.gameObject.CompareTag("GoalLine"))
             {
@@ -182,6 +261,9 @@ namespace PEC1.Managers
                     // Add the finished lap to the list
                     m_Laps.Add(m_CurrentLap);
                     
+                    // Print the lap time
+                    uiManager.AddLapTime(m_CurrentLap.LapNumber, m_CurrentLap.LapTime);
+                    
                     // End the race if it is the last lap
                     if (m_CurrentLap.LapNumber == m_GameManager.GetLaps())
                     {
@@ -196,6 +278,19 @@ namespace PEC1.Managers
             m_NextCheckpointIndex = (m_NextCheckpointIndex + 1) % m_Checkpoints.Count;
             // Enable the next checkpoint
             m_Checkpoints[m_NextCheckpointIndex].gameObject.SetActive(true);
+        }
+        
+        /// <summary>
+        /// Method <c>ReturnToLastCheckpoint</c> returns the player to the last checkpoint.
+        /// </summary>
+        private void ReturnToLastCheckpoint()
+        {
+            // Stop the car
+            m_PlayerRigidbody.velocity = Vector3.zero;
+            m_PlayerRigidbody.angularVelocity = Vector3.zero;
+            // Return the player to the last checkpoint
+            player.transform.position = m_LastCheckpointPosition;
+            player.transform.rotation = m_LastCheckpointRotation;
         }
     }
 }

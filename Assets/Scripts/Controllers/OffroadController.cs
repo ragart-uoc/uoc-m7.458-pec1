@@ -21,7 +21,7 @@ namespace PEC1.Controllers
         private float m_OriginalMaxSpeed;
         
         /// <summary>
-        /// Method <c>Start</c> is called before the first frame update.
+        /// Method <c>Start</c> is called on the frame when a script is enabled just before any of the Update methods are called the first time.
         /// </summary>
         private void Start()
         {

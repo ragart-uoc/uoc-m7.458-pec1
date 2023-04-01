@@ -56,7 +56,7 @@ namespace PEC1.Managers
         }
 
         /// <summary>
-        /// Method <c>Update</c> is called every frame, , if the MonoBehaviour is enabled.
+        /// Method <c>Update</c> is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
         private void Update()
         {
