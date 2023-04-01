@@ -283,7 +283,7 @@ namespace PEC1.Managers
         /// <summary>
         /// Method <c>ReturnToLastCheckpoint</c> returns the player to the last checkpoint.
         /// </summary>
-        private void ReturnToLastCheckpoint()
+        public void ReturnToLastCheckpoint()
         {
             // Stop the car
             m_PlayerRigidbody.velocity = Vector3.zero;

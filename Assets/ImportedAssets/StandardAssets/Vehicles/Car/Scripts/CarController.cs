@@ -59,6 +59,8 @@ namespace UnityStandardAssets.Vehicles.Car
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
 
+        public bool isDamaged;
+
         // Use this for initialization
         private void Start()
         {
