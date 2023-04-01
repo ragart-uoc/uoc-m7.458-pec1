@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PEC1.Entities;
@@ -19,12 +19,15 @@ namespace PEC1.Managers
         
         /// <value>Property <c>m_PlayerRigidbody</c> represents the player Rigidbody.</value>
         private Rigidbody m_PlayerRigidbody;
+
+        /// <value>Property <c>ghost</c> represents the ghost GameObject.</value>
+        public GameObject ghost;
         
         /// <value>Property <c>checkpointContainer</c> represents the object containing the track checkpoints.</value>
         public Transform checkpointContainer;
         
-        /// <value>Property <c>ghostManager</c> represents the GhostManager instance.</value>
-        public GhostManager ghostManager;
+        /// <value>Property <c>playbackManager</c> represents the PlaybackManager instance.</value>
+        public PlaybackManager playbackManager;
 
         /// <value>Property <c>uiManager</c> represents the UIManager instance.</value>
         public UIManager uiManager;
@@ -37,6 +40,9 @@ namespace PEC1.Managers
 
         /// <value>Property <c>m_CurrentLap</c> represents the current lap.</value>
         private Lap m_CurrentLap;
+
+        /// <value>Property <c>m_BestLap</c> represents the best lap.</value>
+        private Lap m_BestLap;
         
         /// <value>Property <c>m_GameManager</c> represents the GameManager instance.</value>
         private GameManager m_GameManager;
@@ -61,7 +67,7 @@ namespace PEC1.Managers
         
         /// <value>Property <c>m_IsRecording</c> shows if the lap is being recorded.</value>
         [SerializeField]
-        private float sampleTime = 0.25f;
+        private float sampleTime = 0.1f;
         
         /// <value>Property <c>m_PlayerInactivityTime</c> represents the time ellapsed since the player has been inactive.</value>
         private float m_PlayerInactivityTime;
@@ -81,6 +87,9 @@ namespace PEC1.Managers
             
             // Get the GameManager instance
             m_GameManager = FindObjectOfType<GameManager>();
+            
+            // Try to get ghost data from JSON
+
         }
         
         /// <summary>
@@ -111,6 +120,13 @@ namespace PEC1.Managers
             // Set the initial position
             m_LastCheckpointPosition = player.transform.position;
             m_LastCheckpointRotation = player.transform.rotation;
+            
+            // Check if there's a best lap saved
+            var savedBestLap = PersistentDataManager.LoadBestLap();
+            if (savedBestLap == String.Empty) return;
+            m_BestLap = new Lap(0);
+            m_BestLap.ImportData(LapData.FromJson(savedBestLap));
+            uiManager.ShowGhostTime(m_BestLap.LapTime);
         }
 
         /// <summary>
@@ -145,7 +161,8 @@ namespace PEC1.Managers
                 if (!(m_CurrentLap.CurrentTimeBetweenSamples >= sampleTime)) return;
                 
                 // Save the data
-                m_CurrentLap.AddNewData(player.transform);
+                m_CurrentLap.AddNewData(player.transform.position, player.transform.rotation);
+                
                 // Keep the extra time between samples
                 m_CurrentLap.CurrentTimeBetweenSamples -= sampleTime;
             }
@@ -191,31 +208,19 @@ namespace PEC1.Managers
             }
             else
             {
-                // Get the lap with the best time
-                var bestLap = m_Laps[0];
-                foreach (var lap in m_Laps.Where(lap => lap.LapTime < bestLap.LapTime))
-                {
-                    bestLap = lap;
-                }
-                
-                // If the current lap is the best lap, show a message
-                if (m_CurrentLap == bestLap)
-                {
-                    uiManager.ShowSubmessage("New record!", 2f);
-                }
-                
                 // Instantiate the new lap
                 var lapNumber = m_CurrentLap.LapNumber + 1;
                 m_CurrentLap = new Lap(lapNumber);
-
-                // Play the ghost
-                ghostManager.StartPlaying(bestLap, sampleTime);
             }
             // Start recording the lap
             m_RecordLap = true;
             // Print the lap message
             var lapMessage = m_CurrentLap.LapNumber == m_GameManager.GetLaps() ? "Last lap!" : $"Lap {m_CurrentLap.LapNumber}";
             uiManager.ShowMessage(lapMessage, 2f);
+            // Play the ghost
+            if (m_BestLap == null) return;
+            var laps = new List<Lap> { m_BestLap };
+            playbackManager.StartPlaying(laps, sampleTime, ghost);
         }
 
         /// <summary>
@@ -225,6 +230,7 @@ namespace PEC1.Managers
         {
             m_RaceActive = false;
             uiManager.ShowMessage("Race complete", 2f);
+            playbackManager.StartPlaying(m_Laps, sampleTime, player, true);
         }
         
         /// <summary>
@@ -239,11 +245,14 @@ namespace PEC1.Managers
                 uiManager.ShowMessage("Wrong checkpoint!", 2f);
                 return;
             }
+            
             // Disable the current checkpoint
             checkpoint.gameObject.SetActive(false);
+            
             // Save the position of the last checkpoint
             m_LastCheckpointPosition = player.transform.position;
             m_LastCheckpointRotation = player.transform.rotation;
+            
             // Check if the player has passed through the goal line
             if (checkpoint.gameObject.CompareTag("GoalLine"))
             {
@@ -256,7 +265,7 @@ namespace PEC1.Managers
                 {
                     // Stop recording the lap and the ghost, in case they're enabled
                     m_RecordLap = false;
-                    ghostManager.StopPlaying();
+                    playbackManager.StopPlaying();
                 
                     // Add the finished lap to the list
                     m_Laps.Add(m_CurrentLap);
@@ -264,6 +273,24 @@ namespace PEC1.Managers
                     // Print the lap time
                     uiManager.AddLapTime(m_CurrentLap.LapNumber, m_CurrentLap.LapTime);
                     
+                    // Get the lap with the best time
+                    m_BestLap ??= m_Laps[0];
+                    if (m_BestLap.LapTime > m_CurrentLap.LapTime)
+                        m_BestLap = m_CurrentLap;
+                    
+                    // Write the lap data to a file
+                    var lapData = m_BestLap.ExportData().ToJson();
+                    PersistentDataManager.SaveBestLap(lapData);
+                    
+                    // Update the ghost time
+                    uiManager.ShowGhostTime(m_BestLap.LapTime);
+                    
+                    // If the current lap is the best lap, show a message
+                    if (m_CurrentLap == m_BestLap)
+                    {
+                        uiManager.ShowSubmessage("New record!", 2f);
+                    }
+
                     // End the race if it is the last lap
                     if (m_CurrentLap.LapNumber == m_GameManager.GetLaps())
                     {

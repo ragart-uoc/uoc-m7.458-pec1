@@ -6757,7 +6757,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62cfefea92ecb684d8e52850db1cc18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelColliders: []
+  wheelColliders:
+  - {fileID: 14600000}
+  - {fileID: 14600006}
+  - {fileID: 14600002}
+  - {fileID: 14600004}
   damageSpeedFactor: 0.5
   offroadSpeedFactor: 0.85
 --- !u!1 &100044
@@ -7607,6 +7611,14 @@ PrefabInstance:
     - target: {fileID: 19800002, guid: 0438351a6e6422d43a09930e9be00ee9, type: 3}
       propertyPath: InitialModule.startRotationY.minMaxState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 0438351a6e6422d43a09930e9be00ee9, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 0438351a6e6422d43a09930e9be00ee9, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0438351a6e6422d43a09930e9be00ee9, type: 3}

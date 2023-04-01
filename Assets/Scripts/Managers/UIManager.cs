@@ -17,6 +17,9 @@ namespace PEC1.Managers
         /// <value>Property <c>submessageText</c> represents the subtext that will be displayed on the screen.</value>
         public TextMeshProUGUI submessageText;
         
+        /// <value>Property <c>ghostTimeText</c> represents the ghost time text.</value>
+        public TextMeshProUGUI ghostTimeText;
+        
         /// <value>Property <c>totalTimeText</c> represents the total time text.</value>
         public TextMeshProUGUI totalTimeText;
         
@@ -65,6 +68,24 @@ namespace PEC1.Managers
         private void HideSubmessage()
         {
             submessageText.text = string.Empty;
+        }
+        
+        /// <summary>
+        /// Method <c>ShowGhostTime</c> updates the total time text.
+        /// </summary>
+        /// <param name="time">The total time.</param>
+        public void ShowGhostTime(float time)
+        {
+            ghostTimeText.text = FloatToTime(time);
+            ghostTimeText.transform.parent.gameObject.SetActive(true);
+        }
+        
+        /// <summary>
+        /// Method <c>HideGhostTime</c> hides the ghost time text.
+        /// </summary>
+        public void HideGhostTime()
+        {
+            ghostTimeText.transform.parent.gameObject.SetActive(false);
         }
         
         /// <summary>

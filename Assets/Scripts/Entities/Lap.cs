@@ -38,11 +38,12 @@ namespace PEC1.Entities
         /// <summary>
         /// Method <c>AddNewData</c> adds a new position and rotation to the lists.
         /// </summary>
-        /// <param name="transform">The transform with the position and rotation information.</param>
-        public void AddNewData(Transform transform)
+        /// <param name="position">The position to add.</param>
+        /// <param name="rotation">The rotation to add.</param>
+        public void AddNewData(Vector3 position, Quaternion rotation)
         {
-            m_CarPositions.Add(transform.position);
-            m_CarRotations.Add(transform.rotation);
+            m_CarPositions.Add(position);
+            m_CarRotations.Add(rotation);
         }
 
         /// <summary>
@@ -64,6 +65,26 @@ namespace PEC1.Entities
             position = m_CarPositions[sample];
             rotation = m_CarRotations[sample];
             return true;
+        }
+
+        /// <summary>
+        /// Method <c>exportData</c> exports the data of the lap.
+        /// </summary>
+        /// <returns>The data of the lap.</returns>
+        public LapData ExportData()
+        {
+            return new LapData(LapTime, m_CarPositions, m_CarRotations);
+        }
+        
+        /// <summary>
+        /// Method <c>ImportData</c> imports the data of the lap.
+        /// </summary>
+        /// <param name="lapData">The data of the lap.</param>
+        public void ImportData(LapData lapData)
+        {
+            LapTime = lapData.lapTime;
+            m_CarPositions = lapData.carPositions;
+            m_CarRotations = lapData.carRotations;
         }
     }
 }
