@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400000}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Helpers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400002}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400004}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400006}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: WheelsHubs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 400014}
   - component: {fileID: 3300002}
   - component: {fileID: 2300002}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarComponents
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: e5a7fdfa104bb7d44b275facb249d4c6, type: 2}
   - {fileID: 2100000, guid: bf5faaa3a8e23de45bf1350be2893dd7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 3300018}
   - component: {fileID: 6500000}
   - component: {fileID: 2300018}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ColliderFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 3300026}
   - component: {fileID: 6500002}
   - component: {fileID: 2300026}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ColliderBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +422,7 @@ GameObject:
   - component: {fileID: 400016}
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +472,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 0414bea2eb4f8dd478eccbf74cd47f72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 3300030}
   - component: {fileID: 6500004}
   - component: {fileID: 2300030}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ColliderBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,7 +602,7 @@ GameObject:
   - component: {fileID: 400026}
   - component: {fileID: 3300016}
   - component: {fileID: 2300016}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarSuspensionFrontRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +652,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 6cbe8b2df1367944c86d6d4444887d6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 400028}
   - component: {fileID: 3300006}
   - component: {fileID: 2300006}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarSuspensionFrontLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +735,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 6cbe8b2df1367944c86d6d4444887d6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -770,7 +770,7 @@ GameObject:
   - component: {fileID: 2300010}
   - component: {fileID: 11400004}
   - component: {fileID: 11400000}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarMudGuardFrontRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -820,7 +820,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 0414bea2eb4f8dd478eccbf74cd47f72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -878,7 +878,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400032}
   - component: {fileID: 10800000}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: HeadlighRightSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -972,7 +972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400034}
   - component: {fileID: 10800002}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: HeadlightLeftSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1067,7 +1067,7 @@ GameObject:
   - component: {fileID: 400036}
   - component: {fileID: 19800000}
   - component: {fileID: 19900000}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ParticleBurnoutSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1339,7 +1339,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -1392,7 +1392,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -1445,7 +1445,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -1498,7 +1498,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -5775,7 +5775,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400038}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5812,7 +5812,7 @@ GameObject:
   - component: {fileID: 14600002}
   - component: {fileID: 8200010}
   - component: {fileID: 11400014}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: WheelHubRearLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5986,7 +5986,7 @@ GameObject:
   - component: {fileID: 14600004}
   - component: {fileID: 8200012}
   - component: {fileID: 11400016}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: WheelHubRearRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6160,7 +6160,7 @@ GameObject:
   - component: {fileID: 14600000}
   - component: {fileID: 8200014}
   - component: {fileID: 11400018}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: WheelHubFrontLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6334,7 +6334,7 @@ GameObject:
   - component: {fileID: 14600006}
   - component: {fileID: 8200016}
   - component: {fileID: 11400020}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: WheelHubFrontRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6509,7 +6509,7 @@ GameObject:
   - component: {fileID: 2300004}
   - component: {fileID: 11400008}
   - component: {fileID: 11400006}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarMudGuardFrontLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6559,7 +6559,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 0414bea2eb4f8dd478eccbf74cd47f72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6618,9 +6618,11 @@ GameObject:
   - component: {fileID: 400050}
   - component: {fileID: 5400000}
   - component: {fileID: 11400002}
-  - component: {fileID: 6668648272699360853}
-  m_Layer: 10
-  m_Name: Ghost
+  - component: {fileID: 11400022}
+  - component: {fileID: 11400024}
+  - component: {fileID: 2469677018422607422}
+  m_Layer: 0
+  m_Name: Car-Eggplant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6695,16 +6697,52 @@ MonoBehaviour:
   m_MaximumSteerAngle: 25
   m_SteerHelper: 0.644
   m_TractionControl: 1
-  m_FullTorqueOverAllWheels: 2500
+  m_FullTorqueOverAllWheels: 5000
   m_ReverseTorque: 500
   m_MaxHandbrakeTorque: 100000000
   m_Downforce: 100
   m_SpeedType: 0
-  m_Topspeed: 150
+  m_Topspeed: 250
   m_RevRangeBoundary: 1
   m_SlipLimit: 0.3
   m_BrakeTorque: 20000
---- !u!114 &6668648272699360853
+--- !u!114 &11400022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96468c245ae8e0d4f8f1c7a7b8b0542e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20fa55eb64c5cea4aa3c71ae19c434bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  engineSoundStyle: 1
+  lowAccelClip: {fileID: 8300000, guid: c4d8928c75c21af43998193f0f038429, type: 3}
+  lowDecelClip: {fileID: 8300000, guid: c4d8928c75c21af43998193f0f038429, type: 3}
+  highAccelClip: {fileID: 8300000, guid: 03e3bd08a6e70684dbe299a3e185fdd2, type: 3}
+  highDecelClip: {fileID: 8300000, guid: 03bf91d88fce91c41995d27de63cc967, type: 3}
+  pitchMultiplier: 0.8
+  lowPitchMin: 1
+  lowPitchMax: 5
+  highPitchMultiplier: 0.25
+  maxRolloffDistance: 500
+  dopplerLevel: 1
+  useDoppler: 1
+--- !u!114 &2469677018422607422
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6733,7 +6771,7 @@ GameObject:
   - component: {fileID: 400018}
   - component: {fileID: 3300012}
   - component: {fileID: 2300012}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarWheelRearRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6783,7 +6821,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 6cbe8b2df1367944c86d6d4444887d6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6816,7 +6854,7 @@ GameObject:
   - component: {fileID: 400020}
   - component: {fileID: 3300020}
   - component: {fileID: 2300020}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarWheelRearLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6866,7 +6904,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 6cbe8b2df1367944c86d6d4444887d6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6899,7 +6937,7 @@ GameObject:
   - component: {fileID: 400022}
   - component: {fileID: 3300024}
   - component: {fileID: 2300024}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarWheelFrontRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6949,7 +6987,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 6cbe8b2df1367944c86d6d4444887d6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6982,7 +7020,7 @@ GameObject:
   - component: {fileID: 400024}
   - component: {fileID: 3300014}
   - component: {fileID: 2300014}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarWheelFrontLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7032,7 +7070,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa4e54068e4ca2f46b21b8cfdaf6f85c, type: 2}
+  - {fileID: 2100000, guid: 6cbe8b2df1367944c86d6d4444887d6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7065,7 +7103,7 @@ GameObject:
   - component: {fileID: 400052}
   - component: {fileID: 3300008}
   - component: {fileID: 2300008}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarHeadLightsGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7149,7 +7187,7 @@ GameObject:
   - component: {fileID: 3300022}
   - component: {fileID: 2300022}
   - component: {fileID: 11400010}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCarBrakeLightsGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7243,7 +7281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400056}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: SkyCar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7286,7 +7324,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400062}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: WaypointTargetObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7317,7 +7355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400064}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: CameraFocusPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

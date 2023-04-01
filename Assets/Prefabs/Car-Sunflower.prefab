@@ -6620,8 +6620,9 @@ GameObject:
   - component: {fileID: 11400002}
   - component: {fileID: 11400022}
   - component: {fileID: 11400024}
+  - component: {fileID: 2469677018422607422}
   m_Layer: 0
-  m_Name: YellowCar
+  m_Name: Car-Sunflower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6696,12 +6697,12 @@ MonoBehaviour:
   m_MaximumSteerAngle: 25
   m_SteerHelper: 0.644
   m_TractionControl: 1
-  m_FullTorqueOverAllWheels: 2500
+  m_FullTorqueOverAllWheels: 1500
   m_ReverseTorque: 500
   m_MaxHandbrakeTorque: 100000000
   m_Downforce: 100
   m_SpeedType: 0
-  m_Topspeed: 150
+  m_Topspeed: 180
   m_RevRangeBoundary: 1
   m_SlipLimit: 0.3
   m_BrakeTorque: 20000
@@ -6741,6 +6742,24 @@ MonoBehaviour:
   maxRolloffDistance: 500
   dopplerLevel: 1
   useDoppler: 1
+--- !u!114 &2469677018422607422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62cfefea92ecb684d8e52850db1cc18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelColliders:
+  - {fileID: 14600000}
+  - {fileID: 14600006}
+  - {fileID: 14600002}
+  - {fileID: 14600004}
+  offroadSpeedFactor: 0.85
 --- !u!1 &100044
 GameObject:
   m_ObjectHideFlags: 0
