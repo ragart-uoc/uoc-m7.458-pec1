@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PEC1.Entities;
@@ -26,7 +27,7 @@ namespace PEC1.Managers
         
         /// <value>Property <c>checkpointContainer</c> represents the object containing the track checkpoints.</value>
         public Transform checkpointContainer;
-        
+
         /// <value>Property <c>playbackManager</c> represents the PlaybackManager instance.</value>
         public PlaybackManager playbackManager;
 
@@ -44,6 +45,9 @@ namespace PEC1.Managers
 
         /// <value>Property <c>m_BestLap</c> represents the best lap.</value>
         private Lap m_BestLap;
+        
+        /// <value>Property <c>m_TrackReadableName</c> represents the track readable name.</value>
+        private string m_TrackReadableName;
         
         /// <value>Property <c>m_GameManager</c> represents the GameManager instance.</value>
         private GameManager m_GameManager;
@@ -72,6 +76,9 @@ namespace PEC1.Managers
         
         /// <value>Property <c>m_PlayerInactivityTime</c> represents the time ellapsed since the player has been inactive.</value>
         private float m_PlayerInactivityTime;
+        
+        /// <value>Property <c>m_IsPaused</c> shows if the game is paused.</value>
+        private bool m_IsPaused;
 
         /// <summary>
         /// Method <c>Awake</c> is called when the script instance is being loaded.
@@ -109,6 +116,12 @@ namespace PEC1.Managers
                 TrackName = SceneManager.GetActiveScene().name,
                 LapNumber = m_GameManager.GetLaps()
             };
+            
+            // Get the track readable name
+            m_TrackReadableName = Regex.Replace(m_Race.TrackName.Replace("Track-", ""), "(\\B[A-Z])", " $1");
+            
+            // Show the track name
+            uiManager.ShowTrackName(m_TrackReadableName, 3f);
 
             // Get the checkpoints
             m_Checkpoints = new List<Checkpoint>();
@@ -171,6 +184,18 @@ namespace PEC1.Managers
         /// </summary>
         private void Update()
         {
+            // If user presses Cancel key, toggle pause menu
+            if (Input.GetButtonDown("Cancel"))
+            {
+                TogglePause();
+            }
+            
+            // If user presses Fire1 key, return to last checkpoint
+            if (Input.GetButtonDown("Fire1"))
+            {
+                ReturnToLastCheckpoint();
+            }
+            
             // Increase the race total time
             if (m_RaceActive)
             {
@@ -209,18 +234,6 @@ namespace PEC1.Managers
             else
             {
                 m_PlayerInactivityTime = 0;
-            }
-        }
-
-        /// <summary>
-        /// Method <c>FixedUpdate</c> is called every fixed frame-rate frame, if the MonoBehaviour is enabled.
-        /// </summary>
-        private void FixedUpdate()
-        {
-            // If user presses Fire1 key, return to last checkpoint
-            if (Input.GetButtonDown("Fire1"))
-            {
-                ReturnToLastCheckpoint();
             }
         }
 
@@ -360,6 +373,33 @@ namespace PEC1.Managers
             // Return the player to the last checkpoint
             player.transform.position = m_LastCheckpointPosition;
             player.transform.rotation = m_LastCheckpointRotation;
+        }
+        
+        /// <summary>
+        /// Method <c>TooglePause</c> is used to pause the game.
+        /// </summary>
+        public void TogglePause()
+        {
+            m_IsPaused = !m_IsPaused;
+            Time.timeScale = m_IsPaused ? 0 : 1;
+            AudioListener.pause = m_IsPaused;
+            uiManager.TogglePauseMenu();
+        }
+
+        /// <summary>
+        /// Method <c>GoToMainMenu</c> is used to go to the main menu.
+        /// </summary>
+        public void GoToMainMenu()
+        {
+            m_GameManager.GoToMainMenu();
+        }
+        
+        /// <summary>
+        /// Method <c>ExitGame</c> is used to exit the game.
+        /// </summary>
+        public void ExitGame()
+        {
+            m_GameManager.ExitGame();
         }
     }
 }

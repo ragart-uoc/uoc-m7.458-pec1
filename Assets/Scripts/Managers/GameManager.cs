@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PEC1.Managers
 {
@@ -37,6 +38,16 @@ namespace PEC1.Managers
         }
         
         /// <summary>
+        /// Method <c>Start</c> is called on the frame when a script is enabled just before any of the Update methods are called the first time.
+        /// </summary>
+        private void Start()
+        {
+            // Disable the mouse entirely
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        
+        /// <summary>
         /// Method <c>SetLaps</c> sets the number of laps.
         /// </summary>
         /// <param name="laps">The number of laps.</param>
@@ -52,6 +63,26 @@ namespace PEC1.Managers
         public int GetLaps()
         {
             return lapNumber;
+        }
+
+        /// <summary>
+        /// Method <c>TooglePause</c> is used to pause the game.
+        /// </summary>
+        public void GoToMainMenu()
+        {
+            Destroy(gameObject);
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        /// <summary>
+        /// Method <c>QuitGame</c> quits the game.
+        /// </summary>
+        public void ExitGame()
+        {
+            Application.Quit();
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #endif
         }
     }
 }

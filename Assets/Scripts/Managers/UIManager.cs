@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 namespace PEC1.Managers
@@ -16,6 +18,9 @@ namespace PEC1.Managers
         
         /// <value>Property <c>submessageText</c> represents the subtext that will be displayed on the screen.</value>
         public TextMeshProUGUI submessageText;
+        
+        /// <value>Property <c>trackNameText</c> represents the track name text.</value>
+        public TextMeshProUGUI trackNameText;
 
         /// <value>Property <c>bestRaceTimeText</c> represents the best race time text.</value>
         public TextMeshProUGUI bestRaceTimeText;
@@ -34,45 +39,57 @@ namespace PEC1.Managers
         
         /// <value>Property <c>lapTimePrefab</c> represents the lap time prefab.</value>
         public GameObject lapTimePrefab;
+
+        /// <value>Property <c>pauseMenu</c> represents the pause menu.</value>
+        public GameObject pauseMenu;
+        
+        /// <value>Property <c>firstSelectedButton</c> represents the first selected button.</value>
+        public Button pauseFirstSelectedButton;
         
         /// <summary>
         /// Method <c>ShowMessage</c> shows a message on the screen.
         /// </summary>
         /// <param name="message">The message to be shown.</param>
-        /// <param name="duration">The duration of the message.</param>
+        /// <param name="duration">The duration of the text.</param>
         public void ShowMessage(string message, float duration)
         {
             messageText.text = message;
-            Invoke(nameof(HideMessage), duration);
-        }
-        
-        /// <summary>
-        /// Method <c>HideMessage</c> hides the message on the screen.
-        /// </summary>
-        private void HideMessage()
-        {
-            messageText.text = string.Empty;
+            StartCoroutine(HideText(messageText, duration));
         }
         
         /// <summary>
         /// Method <c>ShowSubmessage</c> shows a submessage on the screen.
         /// </summary>
         /// <param name="message">The message to be shown.</param>
-        /// <param name="duration">The duration of the message.</param>
+        /// <param name="duration">The duration of the text.</param>
         public void ShowSubmessage(string message, float duration)
         {
             submessageText.text = message;
-            Invoke(nameof(HideSubmessage), duration);
+            StartCoroutine(HideText(submessageText, duration));
         }
         
         /// <summary>
-        /// Method <c>HideSubmessage</c> hides the submessage on the screen.
+        /// Method <c>ShowTrackName</c> shows the track name on the screen.
         /// </summary>
-        private void HideSubmessage()
+        /// <param name="trackName">The track name to be shown.</param>
+        /// <param name="duration">The duration of the text.</param>
+        public void ShowTrackName(string trackName, float duration)
         {
-            submessageText.text = string.Empty;
+            trackNameText.text = trackName;
+            StartCoroutine(HideText(trackNameText, duration));
         }
         
+        /// <summary>
+        /// Method <c>HideText</c> hides any text.
+        /// </summary>
+        /// <param name="text">The text to be hidden.</param>
+        /// <param name="duration">The duration of the text.</param>
+        private IEnumerator HideText(TextMeshProUGUI text, float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            text.text = string.Empty;
+        }
+
         /// <summary>
         /// Method <c>ShowBestRaceTime</c> updates the best race time text.
         /// </summary>
@@ -84,14 +101,6 @@ namespace PEC1.Managers
         }
         
         /// <summary>
-        /// Method <c>HideBestRaceTime</c> hides the bst race time text.
-        /// </summary>
-        public void HideBestRaceTime()
-        {
-            bestRaceTimeText.transform.parent.gameObject.SetActive(false);
-        }
-        
-        /// <summary>
         /// Method <c>ShowBestLapTime</c> updates the best lap time text.
         /// </summary>
         /// <param name="time">The best lap time.</param>
@@ -99,14 +108,6 @@ namespace PEC1.Managers
         {
             bestLapTimeText.text = FloatToTime(time);
             bestLapTimeText.transform.parent.gameObject.SetActive(true);
-        }
-        
-        /// <summary>
-        /// Method <c>HideBestLapTime</c> hides the best lap time text.
-        /// </summary>
-        public void HideBestLapTime()
-        {
-            bestLapTimeText.transform.parent.gameObject.SetActive(false);
         }
         
         /// <summary>
@@ -135,8 +136,8 @@ namespace PEC1.Managers
         public void AddLapTime(int lapNumber, float time)
         {
             var lapTime = Instantiate(lapTimePrefab, lapTimeContainer.transform);
-            lapTime.transform.Find("LapTimeNumber").GetComponent<TextMeshProUGUI>().text = lapNumber.ToString();
-            lapTime.transform.Find("LapTimeValue").GetComponent<TextMeshProUGUI>().text = FloatToTime(time);
+            lapTime.transform.Find("TimeText").GetComponent<TextMeshProUGUI>().text = $"Lap {lapNumber}";
+            lapTime.transform.Find("TimeValue").GetComponent<TextMeshProUGUI>().text = FloatToTime(time);
         }
         
         /// <summary>
@@ -152,6 +153,16 @@ namespace PEC1.Managers
 
             // Format string with leading zeros
             return $"{minutes:00}:{seconds:00}:{miliseconds:0000}";
+        }
+        
+        /// <summary>
+        /// Method <c>TogglePauseMenu</c> toggles the pause menu.
+        /// </summary>
+        public void TogglePauseMenu()
+        {
+            pauseMenu.SetActive(!pauseMenu.activeSelf);
+            if (pauseMenu.activeSelf)
+                pauseFirstSelectedButton.Select();
         }
     }
 }
