@@ -30,9 +30,15 @@ namespace PEC1.Managers
         public static string LoadBestRace(int lapNumber)
         {
             var sceneName = SceneManager.GetActiveScene().name;
-            var fileName = $"{sceneName}_BestRace_{lapNumber}laps.json";
-            var path = Path.Combine(Application.persistentDataPath, fileName);
-            return File.Exists(path) == false ? string.Empty : File.ReadAllText(path);
+            var fileName = $"{sceneName}_BestRace_{lapNumber}laps";
+            var path = Path.Combine(Application.persistentDataPath, fileName + ".json");
+            if (File.Exists(path))
+                return File.ReadAllText(path);
+            // If file doesn't exist, try with Unity resources
+            path = $"SavedData/{fileName}";
+            var textAsset = Resources.Load<TextAsset>(path);
+            return textAsset == null ? string.Empty : textAsset.text;
+            
         }
         
         /// <summary>
@@ -54,9 +60,14 @@ namespace PEC1.Managers
         public static string LoadBestLap()
         {
             var sceneName = SceneManager.GetActiveScene().name;
-            var fileName = $"{sceneName}_BestLap.json";
-            var path = Path.Combine(Application.persistentDataPath, fileName);
-            return File.Exists(path) == false ? string.Empty : File.ReadAllText(path);
+            var fileName = $"{sceneName}_BestLap";
+            var path = Path.Combine(Application.persistentDataPath, fileName + ".json");
+            if (File.Exists(path))
+                return File.ReadAllText(path);
+            // If file doesn't exist, try with Unity resources
+            path = $"SavedData/{fileName}";
+            var textAsset = Resources.Load<TextAsset>(path);
+            return textAsset == null ? string.Empty : textAsset.text;
         }
     }
 }
