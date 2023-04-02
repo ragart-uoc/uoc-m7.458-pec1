@@ -6,6 +6,7 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PEC1.Entities;
+using UnityStandardAssets.Cameras;
 
 namespace PEC1.Managers
 {
@@ -123,6 +124,7 @@ namespace PEC1.Managers
             // Instantiate the player
             m_Player = Instantiate(m_GameManager.GetCarPrefab(), playerContainer.transform.position, playerContainer.transform.rotation);
             m_Player.transform.parent = playerContainer.transform;
+            mainCameraRig.GetComponent<AutoCam>().SetTarget(m_Player.transform);
             var cinemachineClearShot = replayCameraRig.transform.Find("CM ClearShot1").GetComponent<CinemachineClearShot>();
             cinemachineClearShot.LookAt = m_Player.transform;
             var replayCameras = cinemachineClearShot.GetComponentsInChildren<CinemachineVirtualCamera>();
