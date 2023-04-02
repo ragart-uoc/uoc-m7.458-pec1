@@ -2,13 +2,13 @@
 
 ![Logo](README/logo.png)
 
-"Welcome to the countryside!" es el nombre de mi prototipo para la primera Práctica de Evaluación Continua (PEC1) de la asignatura Programación de Videojuegos 2D del Máster Universitario en Diseño y Programación de Videojuegos de la UOC.
+"Welcome to the countryside!" es el nombre de mi prototipo para la primera Práctica de Evaluación Continua (PEC1) de la asignatura Programación de Videojuegos 3D del Máster Universitario en Diseño y Programación de Videojuegos de la UOC.
 
 El objetivo de la práctica era implementar un modo contrarreloj, así como otros añadidos, al tutorial de conducción de coches incorporado en los StandardAssets de Unity, utilizando los conocimientos adquiridos en el estudio del primer módulo de la asignatura y realizando investigación por cuenta propia.
 
 ## Vídeo explicativo
 
-[![Vídeo explicativo]()]()
+[![Vídeo explicativo](https://img.youtube.com/vi/5g4r8AO1xug/maxresdefault.jpg)](https://youtu.be/5g4r8AO1xug)
 
 ## Versión jugable
 
