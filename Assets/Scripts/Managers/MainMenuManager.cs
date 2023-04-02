@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -29,6 +30,9 @@ namespace PEC1.Managers
         
         /// <value>Property <c>m_GameManager</c> represents the GameManager instance.</value>
         private GameManager m_GameManager;
+        
+        /// <value>Property <c>m_AudioSource</c> represents the AudioSource component.</value>
+        private AudioSource m_AudioSource;
 
         /// <summary>
         /// Method <c>Awake</c> is called when the script instance is being loaded.
@@ -53,6 +57,9 @@ namespace PEC1.Managers
         private void Start()
         {
             mainMenuFirstSelectedButton.Select();
+            
+            // Get the AudioSource component
+            m_AudioSource = Camera.main.GetComponent<AudioSource>();
         }
         
         /// <summary>
@@ -60,6 +67,14 @@ namespace PEC1.Managers
         /// </summary>
         public void StartGame()
         {
+            StartCoroutine(StartGameCoroutine());
+        }
+        
+        private IEnumerator StartGameCoroutine()
+        {
+            var audioClip = Resources.Load<AudioClip>("Sounds/yeehaw");
+            m_AudioSource.PlayOneShot(audioClip);
+            yield return new WaitWhile(() => m_AudioSource.isPlaying);
             SceneManager.LoadScene("ScreenSelection");
         }
         
