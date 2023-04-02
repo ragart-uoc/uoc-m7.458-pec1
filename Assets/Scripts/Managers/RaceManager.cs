@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PEC1.Entities;
@@ -32,11 +33,11 @@ namespace PEC1.Managers
         /// <value>Property <c>uiManager</c> represents the UIManager instance.</value>
         public UIManager uiManager;
 
-        /// <value>Property <c>m_TotalTime</c> represents the total time ellapsed from the race start.</value>
-        private float m_TotalTime;
-        
-        /// <value>Property <c>m_Laps</c> represents the list of laps.</value>
-        private List<Lap> m_Laps;
+        /// <value>Property <c>m_Race</c> represents the current race.</value>
+        private Race m_Race;
+
+        /// <value>Property <c>m_BestRace</c> represents the best race.</value>
+        private Race m_BestRace;
 
         /// <value>Property <c>m_CurrentLap</c> represents the current lap.</value>
         private Lap m_CurrentLap;
@@ -87,9 +88,6 @@ namespace PEC1.Managers
             
             // Get the GameManager instance
             m_GameManager = FindObjectOfType<GameManager>();
-            
-            // Try to get ghost data from JSON
-
         }
         
         /// <summary>
@@ -105,6 +103,13 @@ namespace PEC1.Managers
         /// </summary>
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            // Set the race object
+            m_Race = new Race
+            {
+                TrackName = SceneManager.GetActiveScene().name,
+                LapNumber = m_GameManager.GetLaps()
+            };
+
             // Get the checkpoints
             m_Checkpoints = new List<Checkpoint>();
             foreach (Transform checkpointTransform in checkpointContainer)
@@ -121,12 +126,36 @@ namespace PEC1.Managers
             m_LastCheckpointPosition = player.transform.position;
             m_LastCheckpointRotation = player.transform.rotation;
             
+            // Check if there's a best race saved
+            var savedBestRace = PersistentDataManager.LoadBestRace(m_Race.LapNumber);
+            if (savedBestRace != String.Empty)
+            {
+                m_BestRace = new Race();
+                m_BestRace.ImportData(RaceData.FromJson(savedBestRace));
+                uiManager.ShowBestRaceTime(m_BestRace.RaceTime);
+            }
+
             // Check if there's a best lap saved
             var savedBestLap = PersistentDataManager.LoadBestLap();
-            if (savedBestLap == String.Empty) return;
-            m_BestLap = new Lap(0);
-            m_BestLap.ImportData(LapData.FromJson(savedBestLap));
-            uiManager.ShowGhostTime(m_BestLap.LapTime);
+            if (savedBestLap != String.Empty)
+            {
+                m_BestLap = new Lap(0);
+                m_BestLap.ImportData(LapData.FromJson(savedBestLap));
+                uiManager.ShowBestLapTime(m_BestLap.LapTime);
+            // If not, check the best race saved for the best lap time    
+            } else if (m_BestRace != null)
+            {
+                var laps = m_BestRace.GetLaps();
+                m_BestLap = laps[0];
+                foreach (var lap in laps.Where(lap => lap.LapTime < m_BestLap.LapTime))
+                {
+                    m_BestLap = lap;
+                }
+                uiManager.ShowBestLapTime(m_BestLap.LapTime);
+                // Write the lap data to a file
+                var lapData = m_BestLap.ExportData().ToJson();
+                PersistentDataManager.SaveBestLap(lapData);
+            }
         }
 
         /// <summary>
@@ -145,8 +174,8 @@ namespace PEC1.Managers
             // Increase the race total time
             if (m_RaceActive)
             {
-                m_TotalTime += Time.deltaTime;
-                uiManager.UpdateTotalTime(m_TotalTime);
+                m_Race.RaceTime += Time.deltaTime;
+                uiManager.UpdateRaceTime(m_Race.RaceTime);
             }
             
             // Record the lap
@@ -200,27 +229,27 @@ namespace PEC1.Managers
         /// </summary>
         private void NextLap()
         {
-            // Instantiate the lap list and the first lap if it is the first one
-            if (m_CurrentLap == null)
-            {
-                m_Laps = new List<Lap>();
-                m_CurrentLap = new Lap(1);
-            }
-            else
-            {
-                // Instantiate the new lap
-                var lapNumber = m_CurrentLap.LapNumber + 1;
-                m_CurrentLap = new Lap(lapNumber);
-            }
+            // Instantiate the next lap
+            m_CurrentLap = (m_CurrentLap == null) ? new Lap(1) : new Lap(m_CurrentLap.LapNumber + 1);
+
             // Start recording the lap
             m_RecordLap = true;
+            
             // Print the lap message
-            var lapMessage = m_CurrentLap.LapNumber == m_GameManager.GetLaps() ? "Last lap!" : $"Lap {m_CurrentLap.LapNumber}";
+            var lapMessage = m_CurrentLap.LapNumber == m_GameManager.GetLaps()
+                ? "Last lap!"
+                : $"Lap {m_CurrentLap.LapNumber}";
             uiManager.ShowMessage(lapMessage, 2f);
+            
             // Play the ghost
-            if (m_BestLap == null) return;
-            var laps = new List<Lap> { m_BestLap };
-            playbackManager.StartPlaying(laps, sampleTime, ghost);
+            if (m_BestRace != null && m_CurrentLap.LapNumber == 1)
+            {
+                playbackManager.StartPlaying(m_BestRace.GetLaps(), sampleTime, ghost);
+            }
+            else if (m_BestRace == null && m_BestLap != null)
+            {
+                playbackManager.StartPlaying(new List<Lap>() { m_BestLap }, sampleTime, ghost);
+            }
         }
 
         /// <summary>
@@ -228,9 +257,18 @@ namespace PEC1.Managers
         /// </summary>
         private void RaceOver()
         {
+            // Stop the race
             m_RaceActive = false;
+            
+            // Write the race data to a file
+            var raceData = m_Race.ExportData().ToJson();
+            PersistentDataManager.SaveBestRace(raceData, m_Race.LapNumber);
+            
+            // Print the race message
             uiManager.ShowMessage("Race complete", 2f);
-            playbackManager.StartPlaying(m_Laps, sampleTime, player, true);
+            
+            // Start the replay of the race
+            playbackManager.StartPlaying(m_Race.GetLaps(), sampleTime, player, true);
         }
         
         /// <summary>
@@ -268,13 +306,13 @@ namespace PEC1.Managers
                     playbackManager.StopPlaying();
                 
                     // Add the finished lap to the list
-                    m_Laps.Add(m_CurrentLap);
+                    m_Race.AddLap(m_CurrentLap);
                     
                     // Print the lap time
                     uiManager.AddLapTime(m_CurrentLap.LapNumber, m_CurrentLap.LapTime);
                     
                     // Get the lap with the best time
-                    m_BestLap ??= m_Laps[0];
+                    m_BestLap ??= m_Race.GetLaps()[0];
                     if (m_BestLap.LapTime > m_CurrentLap.LapTime)
                         m_BestLap = m_CurrentLap;
                     
@@ -282,8 +320,8 @@ namespace PEC1.Managers
                     var lapData = m_BestLap.ExportData().ToJson();
                     PersistentDataManager.SaveBestLap(lapData);
                     
-                    // Update the ghost time
-                    uiManager.ShowGhostTime(m_BestLap.LapTime);
+                    // Update the best lap time
+                    uiManager.ShowBestLapTime(m_BestLap.LapTime);
                     
                     // If the current lap is the best lap, show a message
                     if (m_CurrentLap == m_BestLap)
@@ -298,11 +336,14 @@ namespace PEC1.Managers
                         return;
                     }
                 }
+                
                 // Start the next lap
                 NextLap();
             }
+            
             // Increase the checkpoint index
             m_NextCheckpointIndex = (m_NextCheckpointIndex + 1) % m_Checkpoints.Count;
+            
             // Enable the next checkpoint
             m_Checkpoints[m_NextCheckpointIndex].gameObject.SetActive(true);
         }
@@ -315,6 +356,7 @@ namespace PEC1.Managers
             // Stop the car
             m_PlayerRigidbody.velocity = Vector3.zero;
             m_PlayerRigidbody.angularVelocity = Vector3.zero;
+            
             // Return the player to the last checkpoint
             player.transform.position = m_LastCheckpointPosition;
             player.transform.rotation = m_LastCheckpointRotation;

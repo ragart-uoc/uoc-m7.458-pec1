@@ -16,12 +16,15 @@ namespace PEC1.Managers
         
         /// <value>Property <c>submessageText</c> represents the subtext that will be displayed on the screen.</value>
         public TextMeshProUGUI submessageText;
+
+        /// <value>Property <c>bestRaceTimeText</c> represents the best race time text.</value>
+        public TextMeshProUGUI bestRaceTimeText;
+
+        /// <value>Property <c>bestLapTimeText</c> represents the best lap time text.</value>
+        public TextMeshProUGUI bestLapTimeText;
         
-        /// <value>Property <c>ghostTimeText</c> represents the ghost time text.</value>
-        public TextMeshProUGUI ghostTimeText;
-        
-        /// <value>Property <c>totalTimeText</c> represents the total time text.</value>
-        public TextMeshProUGUI totalTimeText;
+        /// <value>Property <c>raceTimeText</c> represents the total time text.</value>
+        public TextMeshProUGUI raceTimeText;
         
         /// <value>Property <c>currentLapTimeText</c> represents the current lap time text.</value>
         public TextMeshProUGUI currentLapTimeText;
@@ -71,30 +74,48 @@ namespace PEC1.Managers
         }
         
         /// <summary>
-        /// Method <c>ShowGhostTime</c> updates the total time text.
+        /// Method <c>ShowBestRaceTime</c> updates the best race time text.
         /// </summary>
-        /// <param name="time">The total time.</param>
-        public void ShowGhostTime(float time)
+        /// <param name="time">The best race time.</param>
+        public void ShowBestRaceTime(float time)
         {
-            ghostTimeText.text = FloatToTime(time);
-            ghostTimeText.transform.parent.gameObject.SetActive(true);
+            bestRaceTimeText.text = FloatToTime(time);
+            bestRaceTimeText.transform.parent.gameObject.SetActive(true);
         }
         
         /// <summary>
-        /// Method <c>HideGhostTime</c> hides the ghost time text.
+        /// Method <c>HideBestRaceTime</c> hides the bst race time text.
         /// </summary>
-        public void HideGhostTime()
+        public void HideBestRaceTime()
         {
-            ghostTimeText.transform.parent.gameObject.SetActive(false);
+            bestRaceTimeText.transform.parent.gameObject.SetActive(false);
         }
         
         /// <summary>
-        /// Method <c>UpdateTotalTime</c> updates the total time text.
+        /// Method <c>ShowBestLapTime</c> updates the best lap time text.
         /// </summary>
-        /// <param name="time">The total time.</param>
-        public void UpdateTotalTime(float time)
+        /// <param name="time">The best lap time.</param>
+        public void ShowBestLapTime(float time)
         {
-            totalTimeText.text = FloatToTime(time);
+            bestLapTimeText.text = FloatToTime(time);
+            bestLapTimeText.transform.parent.gameObject.SetActive(true);
+        }
+        
+        /// <summary>
+        /// Method <c>HideBestLapTime</c> hides the best lap time text.
+        /// </summary>
+        public void HideBestLapTime()
+        {
+            bestLapTimeText.transform.parent.gameObject.SetActive(false);
+        }
+        
+        /// <summary>
+        /// Method <c>UpdateRaceTime</c> updates the race time text.
+        /// </summary>
+        /// <param name="time">The race time.</param>
+        public void UpdateRaceTime(float time)
+        {
+            raceTimeText.text = FloatToTime(time);
         }
         
         /// <summary>

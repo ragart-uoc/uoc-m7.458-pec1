@@ -171,14 +171,6 @@ namespace PEC1.Managers
             {
                 carParticle.Stop();
             }
-
-            // Disable car input and audio
-            m_CarController = m_CarToPlay.GetComponent<CarController>();
-            m_CarUserControl = m_CarToPlay.TryGetComponent(out CarUserControl carUserControl) ? carUserControl : null;
-            m_CarAudio = m_CarToPlay.TryGetComponent(out CarAudio carAudio) ? carAudio : null;
-            m_CarController.enabled = false;
-            if (m_CarUserControl != null) m_CarUserControl.enabled = false;
-            if (m_CarAudio != null) m_CarAudio.enabled = false;
             
             // Stop and disable all children audiosources
             m_CarAudioSources = m_CarToPlay.GetComponentsInChildren<AudioSource>();
@@ -187,6 +179,14 @@ namespace PEC1.Managers
                 carAudioSource.Stop();
                 carAudioSource.enabled = false;
             }
+
+            // Disable car input and audio
+            m_CarController = m_CarToPlay.GetComponent<CarController>();
+            m_CarUserControl = m_CarToPlay.TryGetComponent(out CarUserControl carUserControl) ? carUserControl : null;
+            m_CarAudio = m_CarToPlay.TryGetComponent(out CarAudio carAudio) ? carAudio : null;
+            m_CarController.enabled = false;
+            if (m_CarUserControl != null) m_CarUserControl.enabled = false;
+            if (m_CarAudio != null) m_CarAudio.enabled = false;
 
             // Enable the car
             m_CarToPlay.SetActive(true);

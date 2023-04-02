@@ -10,7 +10,7 @@ namespace PEC1.Entities
     [Serializable]
     public class LapData
     {
-        /// <value>Property <c>lapNumber</c> represents the lap number.</value>
+        /// <value>Property <c>lapTime</c> represents the lap time.</value>
         public float lapTime;
         
         /// <value>Property <c>carPositions</c> represents the list of positions of the lap.</value>
