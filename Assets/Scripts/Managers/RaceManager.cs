@@ -261,6 +261,7 @@ namespace PEC1.Managers
             }
             else if (m_BestRace == null && m_BestLap != null)
             {
+                playbackManager.StopPlaying();
                 playbackManager.StartPlaying(new List<Lap>() { m_BestLap }, sampleTime, ghost);
             }
         }
@@ -273,12 +274,18 @@ namespace PEC1.Managers
             // Stop the race
             m_RaceActive = false;
             
+            // Stop any active playback
+            playbackManager.StopPlaying();
+            
             // Write the race data to a file
             var raceData = m_Race.ExportData().ToJson();
             PersistentDataManager.SaveBestRace(raceData, m_Race.LapNumber);
             
             // Print the race message
             uiManager.ShowMessage("Race complete", 2f);
+            
+            // Show the race over menu
+            uiManager.ToggleRaceOverMenu();
             
             // Start the replay of the race
             playbackManager.StartPlaying(m_Race.GetLaps(), sampleTime, player, true);
@@ -314,9 +321,8 @@ namespace PEC1.Managers
                 }
                 else
                 {
-                    // Stop recording the lap and the ghost, in case they're enabled
+                    // Stop recording the lap
                     m_RecordLap = false;
-                    playbackManager.StopPlaying();
                 
                     // Add the finished lap to the list
                     m_Race.AddLap(m_CurrentLap);
@@ -380,10 +386,23 @@ namespace PEC1.Managers
         /// </summary>
         public void TogglePause()
         {
+            // Do nothing is race over menu is active
+            if (uiManager.IsRaceOverMenuActive())
+                return;
             m_IsPaused = !m_IsPaused;
+            // Pause or resume time and audio
             Time.timeScale = m_IsPaused ? 0 : 1;
             AudioListener.pause = m_IsPaused;
+            // Show or hide the pause menu
             uiManager.TogglePauseMenu();
+        }
+
+        /// <summary>
+        /// Method <c>WatchReplay</c> is used to show the replay of the race,
+        /// </summary>
+        public void WatchReplay()
+        {
+            
         }
 
         /// <summary>

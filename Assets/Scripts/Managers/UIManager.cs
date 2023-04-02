@@ -43,8 +43,14 @@ namespace PEC1.Managers
         /// <value>Property <c>pauseMenu</c> represents the pause menu.</value>
         public GameObject pauseMenu;
         
-        /// <value>Property <c>firstSelectedButton</c> represents the first selected button.</value>
+        /// <value>Property <c>pauseFirstSelectedButton</c> represents the first selected button for the pause menu.</value>
         public Button pauseFirstSelectedButton;
+        
+        /// <value>Property <c>raceOverMenu</c> represents the race over menu.</value>
+        public GameObject raceOverMenu;
+        
+        /// <value>Property <c>raceOverFirstSelectedButton</c> represents the first selected button for the race over menu.</value>
+        public Button raceOverFirstSelectedButton;
         
         /// <summary>
         /// Method <c>ShowMessage</c> shows a message on the screen.
@@ -163,6 +169,26 @@ namespace PEC1.Managers
             pauseMenu.SetActive(!pauseMenu.activeSelf);
             if (pauseMenu.activeSelf)
                 pauseFirstSelectedButton.Select();
+        }
+
+        /// <summary>
+        /// Method <c>ToggleRaceOverMenu</c> toggles the race over menu.
+        /// </summary>
+        public void ToggleRaceOverMenu()
+        {
+            raceOverMenu.SetActive(!raceOverMenu.activeSelf);
+            if (raceOverMenu.activeSelf)
+                raceOverFirstSelectedButton.Select();
+        }
+
+        /// <summary>
+        /// Method <c>IsGameOverMenuActive</c> checks if the race over menu is active.
+        /// </summary>
+        /// <returns>True if the race over menu is active, false otherwise.</returns>
+        public bool IsRaceOverMenuActive()
+        {
+            Debug.Log(raceOverMenu.activeSelf);
+            return raceOverMenu.activeSelf;
         }
     }
 }
