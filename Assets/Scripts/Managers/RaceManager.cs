@@ -28,6 +28,12 @@ namespace PEC1.Managers
         /// <value>Property <c>checkpointContainer</c> represents the object containing the track checkpoints.</value>
         public Transform checkpointContainer;
 
+        /// <value>Property <c>mainCameraRig</c> represents the main camera rig.</value>
+        public GameObject mainCameraRig;
+        
+        /// <value>Property <c>replayCameraRig</c> represents the replay camera rig.</value>
+        public GameObject replayCameraRig;
+
         /// <value>Property <c>playbackManager</c> represents the PlaybackManager instance.</value>
         public PlaybackManager playbackManager;
 
@@ -410,7 +416,10 @@ namespace PEC1.Managers
         /// </summary>
         public void WatchReplay()
         {
-            
+            uiManager.ToggleRaceOverMenu();
+            mainCameraRig.SetActive(false);
+            replayCameraRig.SetActive(true);
+            playbackManager.StartPlaying(m_Race.GetLaps(), sampleTime, player);
         }
 
         /// <summary>
