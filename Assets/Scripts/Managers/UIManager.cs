@@ -51,6 +51,9 @@ namespace PEC1.Managers
         
         /// <value>Property <c>raceOverFirstSelectedButton</c> represents the first selected button for the race over menu.</value>
         public Button raceOverFirstSelectedButton;
+
+        /// <value>Property <c>minimapCameraRig</c> represents the minimap camera rig.</value>
+        public GameObject minimapCameraRig;
         
         /// <summary>
         /// Method <c>ShowMessage</c> shows a message on the screen.
@@ -187,8 +190,15 @@ namespace PEC1.Managers
         /// <returns>True if the race over menu is active, false otherwise.</returns>
         public bool IsRaceOverMenuActive()
         {
-            Debug.Log(raceOverMenu.activeSelf);
             return raceOverMenu.activeSelf;
+        }
+
+        /// <summary>
+        /// Method <c>ToggleMinimapCameraRig</c> toggles the minimap camera rig.
+        /// </summary>
+        public void ToggleMinimapCameraRig()
+        {
+            minimapCameraRig.SetActive(!minimapCameraRig.activeSelf);
         }
     }
 }

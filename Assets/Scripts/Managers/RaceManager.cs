@@ -398,6 +398,14 @@ namespace PEC1.Managers
         }
 
         /// <summary>
+        /// Method <c>ToggleMinimap</c> is used to toggle the minimap.
+        /// </summary>
+        public void ToggleMinimap()
+        {
+            uiManager.ToggleMinimapCameraRig();
+        }
+
+        /// <summary>
         /// Method <c>WatchReplay</c> is used to show the replay of the race,
         /// </summary>
         public void WatchReplay()
