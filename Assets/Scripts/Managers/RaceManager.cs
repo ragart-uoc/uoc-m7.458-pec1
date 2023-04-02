@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PEC1.Entities;
@@ -16,8 +17,11 @@ namespace PEC1.Managers
         /// <value>Property <c>_instance</c> represents the singleton instance of the class.</value>
         private static RaceManager _instance;
 
-        /// <value>Property <c>player</c> represents the player GameObject.</value>
-        public GameObject player;
+        /// <value>Property <c>playerContainer</c> represents the object containing the player.</value>
+        public GameObject playerContainer;
+
+        /// <value>Property <c>m_Player</c> represents the player GameObject.</value>
+        private GameObject m_Player;
         
         /// <value>Property <c>m_PlayerRigidbody</c> represents the player Rigidbody.</value>
         private Rigidbody m_PlayerRigidbody;
@@ -116,6 +120,26 @@ namespace PEC1.Managers
         /// </summary>
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            // Instantiate the player
+            m_Player = Instantiate(m_GameManager.GetCarPrefab(), playerContainer.transform.position, playerContainer.transform.rotation);
+            m_Player.transform.parent = playerContainer.transform;
+            var cinemachineClearShot = replayCameraRig.transform.Find("CM ClearShot1").GetComponent<CinemachineClearShot>();
+            cinemachineClearShot.LookAt = m_Player.transform;
+            var replayCameras = cinemachineClearShot.GetComponentsInChildren<CinemachineVirtualCamera>();
+            foreach (var replayCamera in replayCameras)
+            {
+                if (replayCamera.Follow != null
+                    && replayCamera.Follow.transform.name == "PlayerContainer")
+                {
+                    replayCamera.Follow = m_Player.transform;
+                }
+                if (replayCamera.LookAt != null
+                    && replayCamera.LookAt.transform.name == "PlayerContainer")
+                {
+                    replayCamera.LookAt = m_Player.transform;
+                }
+            }
+            
             // Set the race object
             m_Race = new Race
             {
@@ -139,11 +163,11 @@ namespace PEC1.Managers
             }
             
             // Get the player rigidbody
-            m_PlayerRigidbody = player.GetComponent<Rigidbody>();
+            m_PlayerRigidbody = m_Player.GetComponent<Rigidbody>();
             
             // Set the initial position
-            m_LastCheckpointPosition = player.transform.position;
-            m_LastCheckpointRotation = player.transform.rotation;
+            m_LastCheckpointPosition = m_Player.transform.position;
+            m_LastCheckpointRotation = m_Player.transform.rotation;
             
             // Check if there's a best race saved
             var savedBestRace = PersistentDataManager.LoadBestRace(m_Race.LapNumber);
@@ -221,7 +245,7 @@ namespace PEC1.Managers
                 if (!(m_CurrentLap.CurrentTimeBetweenSamples >= sampleTime)) return;
                 
                 // Save the data
-                m_CurrentLap.AddNewData(player.transform.position, player.transform.rotation);
+                m_CurrentLap.AddNewData(m_Player.transform.position, m_Player.transform.rotation);
                 
                 // Keep the extra time between samples
                 m_CurrentLap.CurrentTimeBetweenSamples -= sampleTime;
@@ -294,7 +318,7 @@ namespace PEC1.Managers
             uiManager.ToggleRaceOverMenu();
             
             // Start the replay of the race
-            playbackManager.StartPlaying(m_Race.GetLaps(), sampleTime, player, true);
+            playbackManager.StartPlaying(m_Race.GetLaps(), sampleTime, m_Player, true);
         }
         
         /// <summary>
@@ -314,8 +338,8 @@ namespace PEC1.Managers
             checkpoint.gameObject.SetActive(false);
             
             // Save the position of the last checkpoint
-            m_LastCheckpointPosition = player.transform.position;
-            m_LastCheckpointRotation = player.transform.rotation;
+            m_LastCheckpointPosition = m_Player.transform.position;
+            m_LastCheckpointRotation = m_Player.transform.rotation;
             
             // Check if the player has passed through the goal line
             if (checkpoint.gameObject.CompareTag("GoalLine"))
@@ -383,8 +407,8 @@ namespace PEC1.Managers
             m_PlayerRigidbody.angularVelocity = Vector3.zero;
             
             // Return the player to the last checkpoint
-            player.transform.position = m_LastCheckpointPosition;
-            player.transform.rotation = m_LastCheckpointRotation;
+            m_Player.transform.position = m_LastCheckpointPosition;
+            m_Player.transform.rotation = m_LastCheckpointRotation;
         }
         
         /// <summary>
@@ -419,7 +443,7 @@ namespace PEC1.Managers
             uiManager.ToggleRaceOverMenu();
             mainCameraRig.SetActive(false);
             replayCameraRig.SetActive(true);
-            playbackManager.StartPlaying(m_Race.GetLaps(), sampleTime, player);
+            playbackManager.StartPlaying(m_Race.GetLaps(), sampleTime, m_Player);
         }
 
         /// <summary>

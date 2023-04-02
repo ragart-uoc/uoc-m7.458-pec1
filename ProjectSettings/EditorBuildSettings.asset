@@ -6,6 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Opening.unity
+    guid: 67604ac0938e84d4ea1297b4cbd75d18
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 7604f3bb040886d4385ff3719c1a5517
+  - enabled: 1
+    path: Assets/Scenes/ScreenSelection.unity
+    guid: 7c2e106c56cab994ea5fc8c4cc490b7f
+  - enabled: 1
+    path: Assets/Scenes/CarSelection.unity
+    guid: 30d285dcfe0a36349b83f3f838d0395a
+  - enabled: 1
     path: Assets/Scenes/Track-TheLake.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Track-Downhill.unity
+    guid: de0e766f36ba99c4a9c0ffdc29dbd33d
   m_configObjects: {}

@@ -18,6 +18,14 @@ namespace PEC1.Managers
         /// <value>Property <c>lapNumber</c> represents the chosen number of laps.</value>
         [SerializeField]
         private int lapNumber;
+        
+        /// <value>Property <c>sceneName</c> represents the name of the scene.</value>
+        [SerializeField]
+        private string sceneName;
+
+        /// <value>Property <c>carPrefab</c> represents the car prefab.</value>
+        [SerializeField]
+        private GameObject carPrefab;
 
         /// <summary>
         /// Method <c>Awake</c> is called when the script instance is being loaded.
@@ -83,6 +91,39 @@ namespace PEC1.Managers
             #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
             #endif
+        }
+        
+        /// <summary>
+        /// Method <c>SetSceneName</c> sets the name of the scene.
+        /// </summary>
+        /// <param name="scene">The name of the scene.</param>
+        public void SetSceneName(string scene)
+        {
+            sceneName = scene;
+        }
+        
+        /// <summary>
+        /// Method <c>LoadScene</c> loads the scene.
+        /// </summary>
+        public void LoadRaceScene()
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+        
+        /// <summary>
+        /// Method <c>SetCarPrefab</c> sets the car prefab.
+        /// </summary>
+        public void SetCarPrefab(GameObject car)
+        {
+            carPrefab = car;
+        }
+        
+        /// <summary>
+        /// Method <c>GetCarPrefab</c> gets the car prefab.
+        /// </summary>
+        public GameObject GetCarPrefab()
+        {
+            return carPrefab;
         }
     }
 }

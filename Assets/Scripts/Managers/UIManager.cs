@@ -54,6 +54,20 @@ namespace PEC1.Managers
 
         /// <value>Property <c>minimapCameraRig</c> represents the minimap camera rig.</value>
         public GameObject minimapCameraRig;
+
+        /// <summary>
+        /// Method <c>Awake</c> is called when the script instance is being loaded.
+        /// </summary>
+        private void Awake()
+        {
+            // Singleton pattern
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+            _instance = this;
+        }
         
         /// <summary>
         /// Method <c>ShowMessage</c> shows a message on the screen.
